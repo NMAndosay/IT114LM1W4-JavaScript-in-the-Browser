@@ -15,20 +15,85 @@
             // Resource: https://www.freecodecamp.org/news/how-to-fetch-data-from-an-api-using-the-fetch-api-in-javascript/
 
             // Checkpoint 4.1 What are HTTP requests and reponses? What are the various HTTP verbs and what do they do?
-            // Answer: 
-
+            /* Answer: HTTP (Hypertext Transfer Protocol) is a protocol used for communication between
+            clients and servers over the web. HTTP requests are messages sent by a client 
+            to request information from a server, and HTTP responses are messages 
+            sent by the server in response to those requests.
+            */
             // Todo 4.1 Fetch the list of users. Outout the first and second page of users.
+            const getUsers = async (page) => {
+                const response = await fetch(`https://reqres.in/api/users?page=${page}`);
+                const data = await response.json();
+                console.log(`Page ${page} Users:`, data.data);
+            };
 
+            await getUsers(1); 
+            await getUsers(2); 
             // Todo 4.2 Fetch the information about a single user. Display their information
+            const getUserId = async (id) => {
+                const response = await fetch(`https://reqres.in/api/users/${id}`);
+                const data = await response.json();
+                console.log(`User ${id} Information:`, data.data);
+            };
+
+            await getUserId(1); 
 
             // Todo 4.3 Create a user
+            const createUser = async () => {
+                const response = await fetch('https://reqres.in/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: 'John Doe',
+                        job: 'Developer',
+                    }),
+                });
 
+                const data = await response.json();
+                console.log('Created User:', data);
+            };
+
+            await createUser();
             // Todo 4.4 Update the information of the user that you have created
+            const updateUser = async (userId) => {
+                const response = await fetch(`https://reqres.in/api/users/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: 'Updated John Doe',
+                        job: 'Senior Developer',
+                    }),
+                });
 
+                const data = await response.json();
+                console.log(`Updated User ${userId} Information:`, data);
+            };
+
+            await updateUser(1);
             // Todo 4.5 Delete the user that you have created
+            const deleteUser = async (userId) => {
+                const response = await fetch(`https://reqres.in/api/users/${userId}`, {
+                    method: 'DELETE',
+                });
 
+                if (response.status === 204) {
+                    console.log(`Deleted User ${userId}`);
+                } else {
+                    console.log(`Failed to delete user ${userId}`);
+                }
+            };
+
+            await deleteUser(1);
             // Checkpoint 4.2 What is the difference between callbacks, then-catch vs await-try-catch? When should you use one over the other
-            // Answer: 
+            /* Answer: Callbacks, then-catch, and await-try-catch are mechanisms for handling asynchronous operations.
+            Callbacks: Traditional way of handling asynchronous operations. Callback functions are passed to asynchronous functions, and they are executed when the operation is complete. Callbacks can lead to callback hell (nested callbacks) and make code harder to read.
+            then-catch: Promise-based approach where the `then` method is used to handle the success case, and the `catch` method is used for error handling. It provides a cleaner syntax compared to callbacks but can still result in nested structures when chaining multiple asynchronous operations.
+            await-try-catch: Modern approach using `async/await` syntax. The `await` keyword is used to pause execution until a Promise is resolved, and errors can be caught using `try-catch` blocks. It provides a more synchronous-looking and readable code structure, making it easier to reason about asynchronous code.
+            */
         }
         start()
 
